@@ -1,344 +1,135 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A small personal learning journal with weekly reflections, practice projects, and cats.">
-  <title>My Little Journey</title>
-  <style>
-    :root {
-      --cream: #fbf7f0;
-      --paper: #fffdf9;
-      --sand: #f2e6d7;
-      --peach: #f6dfcc;
-      --brown: #5d4635;
-      --muted: #867565;
-      --rust: #a66c45;
-      --line: #eadfd2;
-      --shadow: 0 8px 24px rgba(85, 61, 41, .07);
-      --radius: 20px;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0; background: var(--cream); color: var(--brown);
-      font-family: "Trebuchet MS", "Segoe UI", sans-serif; line-height: 1.6;
-    }
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; }
-    .shell { width: min(1100px, calc(100% - 32px)); margin: 0 auto; }
-    header {
-      position: sticky; top: 0; z-index: 10; background: rgba(255,253,249,.94);
-      backdrop-filter: blur(12px); border-bottom: 1px solid var(--line);
-    }
-    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .02em; white-space: nowrap; }
-    .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 14px; background: var(--sand); font-size: 21px; }
-    .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .nav-links button {
-      border: 0; background: transparent; color: var(--muted); cursor: pointer;
-      padding: 10px 13px; border-radius: 999px; font-size: .94rem;
-    }
-    .nav-links button:hover, .nav-links button.active { color: var(--brown); background: var(--sand); }
-    main { padding: 28px 0 42px; min-height: calc(100vh - 145px); }
-    .hero {
-      display: grid; grid-template-columns: 1.1fr .9fr; overflow: hidden;
-      background: linear-gradient(115deg, #fffdf9 0%, #f5e9db 100%);
-      border: 1px solid var(--line); border-radius: 26px; box-shadow: var(--shadow);
-      min-height: 290px; margin-bottom: 24px;
-    }
-    .hero-copy { padding: clamp(28px, 5vw, 58px); align-self: center; }
-    .eyebrow { color: var(--rust); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 800; }
-    h1, h2, h3, p { margin-top: 0; }
-    h1 { font-family: Georgia, serif; font-weight: 500; font-size: clamp(2.3rem, 5vw, 4rem); line-height: 1.08; margin: 12px 0 18px; }
-    h2 { font-family: Georgia, serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 500; margin-bottom: 8px; }
-    h3 { font-size: 1.08rem; margin-bottom: 5px; }
-    .intro { color: var(--muted); max-width: 500px; margin-bottom: 20px; }
-    .hero-art { display: grid; place-items: center; min-height: 240px; background: radial-gradient(circle at 55% 45%, #fff9f0 0 15%, transparent 16%), linear-gradient(140deg, #f2dfcc, #e9d4bd); font-size: clamp(6rem, 14vw, 10rem); position: relative; }
-    .hero-art:after { content: "little moments, big growth ♡"; position: absolute; bottom: 22px; right: 24px; font-family: Georgia, serif; font-style: italic; font-size: .9rem; color: var(--rust); }
-    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 28px 2px 16px; }
-    .section-heading p { color: var(--muted); margin: 0; }
-    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .category-card {
-      text-align: left; padding: 25px; border: 1px solid var(--line); border-radius: var(--radius);
-      background: var(--paper); box-shadow: var(--shadow); cursor: pointer; min-height: 218px;
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .category-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(85,61,41,.11); }
-    .category-card.featured { background: linear-gradient(145deg, #f8e7d6, #fffaf3); border: 2px solid #d9ad87; }
-    .card-icon { font-size: 2rem; margin-bottom: 12px; }
-    .category-card p { color: var(--muted); font-size: .94rem; margin: 8px 0 18px; }
-    .pill { display: inline-block; background: var(--rust); color: white; border-radius: 999px; padding: 9px 16px; font-size: .84rem; }
-    .page-banner { padding: 28px clamp(22px, 4vw, 40px); border-radius: 22px; background: #f3e6d8; border: 1px solid var(--line); margin-bottom: 22px; }
-    .page-banner p { color: var(--muted); margin-bottom: 0; }
-    .week-list { display: grid; gap: 12px; }
-    .week-item {
-      display: grid; grid-template-columns: 54px 1fr auto; gap: 16px; align-items: center;
-      width: 100%; text-align: left; border: 1px solid var(--line); background: var(--paper);
-      border-radius: 16px; padding: 17px 20px; cursor: pointer; box-shadow: 0 3px 12px rgba(85,61,41,.035);
-    }
-    .week-item:hover { border-color: #d5ac89; background: #fffaf4; }
-    .week-number { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--sand); font-family: Georgia, serif; font-size: 1.35rem; }
-    .week-item p { margin: 0; color: var(--muted); font-size: .9rem; }
-    .arrow { color: var(--rust); font-size: 1.35rem; }
-    .detail { max-width: 800px; margin: 0 auto; background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: clamp(22px, 5vw, 44px); box-shadow: var(--shadow); }
-    .back { border: 0; background: transparent; color: var(--rust); cursor: pointer; padding: 0; margin-bottom: 18px; }
-    .detail-meta { color: var(--muted); font-size: .9rem; margin-bottom: 24px; }
-    .reflection-block { padding: 18px 20px; border-radius: 14px; background: #fbf4eb; margin: 14px 0; }
-    .reflection-block h3 { color: var(--rust); }
-    .reflection-block p, .reflection-block ul { margin-bottom: 0; }
-    .project-card { display: grid; grid-template-columns: 76px 1fr; gap: 18px; align-items: start; padding: 20px; border: 1px solid var(--line); background: var(--paper); border-radius: 17px; margin-bottom: 13px; }
-    .project-icon { display: grid; place-items: center; background: var(--sand); border-radius: 14px; min-height: 70px; font-size: 2rem; }
-    .project-card p { color: var(--muted); margin-bottom: 0; }
-    .cats-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    .cat-card { padding: 20px; border: 1px solid var(--line); background: var(--paper); border-radius: 18px; }
-    .cat-art { min-height: 150px; display: grid; place-items: center; background: linear-gradient(135deg, #f4e4d3, #f9eee3); border-radius: 13px; font-size: 5rem; margin-bottom: 15px; }
-    .cat-card p { color: var(--muted); margin-bottom: 0; }
-    footer { border-top: 1px solid var(--line); padding: 20px 0; color: var(--muted); font-size: .85rem; }
-    .footer-inner { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-
-    .film-wall {
-      position: relative; min-height: 330px; margin: 24px 0 30px; padding: 32px 24px 42px;
-      border: 1px solid var(--line); border-radius: 20px;
-      background-color: #f7f0e5;
-      background-image: linear-gradient(rgba(110,91,69,.07) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(110,91,69,.07) 1px, transparent 1px);
-      background-size: 16px 16px; overflow: hidden;
-    }
-    .film-wall-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
-    .film-wall-heading h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin:0; }
-    .film-wall-heading p { margin:4px 0 0; color:var(--muted); font-size:.9rem; }
-    .photo-tools { display:flex; gap:8px; flex-wrap:wrap; }
-    .photo-tools button, .photo-tools label {
-      display:inline-flex; align-items:center; justify-content:center; border:1px solid #b8a38c;
-      background:#fffaf2; color:var(--brown); padding:8px 12px; border-radius:999px; cursor:pointer; font-size:.84rem;
-    }
-    .photo-tools button:hover, .photo-tools label:hover { background:#f0dfca; }
-    .photo-tools input { display:none; }
-    .polaroid-row { display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:center; max-width:800px; margin:0 auto; }
-    .polaroid {
-      position:relative; padding:10px 10px 42px; background:#fffdf8; border:1px solid #e4d9c8;
-      box-shadow:0 7px 14px rgba(60,44,30,.16); transform:rotate(-3deg);
-    }
-    .polaroid:nth-child(2) { transform:rotate(2.5deg); margin-top:24px; }
-    .polaroid img { display:block; width:100%; height:190px; object-fit:cover; background:#e9dfd1; }
-    .polaroid figcaption { position:absolute; bottom:9px; left:12px; right:12px; font-family:Georgia,serif; font-style:italic; font-weight:700; font-size:.9rem; }
-    .tape { position:absolute; top:-10px; left:32%; width:70px; height:23px; background:rgba(204,178,139,.65); transform:rotate(-5deg); z-index:1; }
-    .polaroid:nth-child(2) .tape { left:60%; transform:rotate(7deg); }
-    .film-note { position:absolute; right:20px; bottom:10px; font-family:Georgia,serif; font-weight:700; font-style:italic; color:#243e5a; transform:rotate(-5deg); }
-    .photo-hint { font-size:.82rem; color:var(--muted); margin:10px 0 0; }
-    @media (max-width:620px) {
-      .film-wall { padding:20px 14px 40px; }
-      .film-wall-heading { align-items:flex-start; flex-direction:column; }
-      .polaroid-row { gap:14px; }
-      .polaroid { padding:7px 7px 36px; }
-      .polaroid img { height:125px; }
-      .polaroid figcaption { font-size:.76rem; }
-    }
-
-    .hidden { display: none !important; }
-    @media (max-width: 720px) {
-      .nav { align-items: flex-start; flex-direction: column; padding: 14px 0; gap: 8px; }
-      .nav-links { width: 100%; gap: 3px; }
-      .nav-links button { padding: 8px 10px; }
-      .hero { grid-template-columns: 1fr; }
-      .hero-art { min-height: 170px; }
-      .cards { grid-template-columns: 1fr; }
-      .category-card { min-height: auto; }
-      .cats-grid { grid-template-columns: 1fr; }
-      .week-item { grid-template-columns: 44px 1fr auto; gap: 11px; padding: 14px; }
-      .week-number { width: 42px; height: 42px; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Little Journey</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="shell nav">
-      <a class="brand" href="#home" aria-label="My Little Journey home">
-        <span class="brand-mark">🐾</span><span>My Little Journey</span>
-      </a>
-      <nav class="nav-links" aria-label="Main navigation">
-        <button data-page="home" class="active">Home</button>
-        <button data-page="reflections">Reflections</button>
-        <button data-page="practice">My Practice</button>
-        <button data-page="cats">My Cats</button>
-      </nav>
-    </div>
+<div class="paper-shell">
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="My Little Journey home"><span class="brand-icon">✿</span><span>My Little Journey</span></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#home" data-page-link="home">Home</a>
+      <a href="#reflections" data-page-link="reflections">Reflections</a>
+      <a href="#practice" data-page-link="practice">My Practice</a>
+      <a href="#cats" data-page-link="cats">My Cats</a>
+    </nav>
   </header>
 
-  <main class="shell">
-    <section id="home" class="page">
-      <div class="hero">
+  <main>
+    <section class="page active" id="home" data-page="home">
+      <div class="hero-grid">
         <div class="hero-copy">
-          <div class="eyebrow">Welcome to my learning journey</div>
+          <p class="eyebrow">A little notebook of learning</p>
           <h1>Small Steps,<br>Big Changes.</h1>
-          <p class="intro">A little corner of the internet where I record my weekly reflections, creative practice, and lovely moments with my cats.</p>
-          <span style="color:var(--rust)">— made with curiosity and a cup of tea ☕</span>
+          <span class="red-scribble"></span>
+          <p class="intro">A personal learning journey, where I record my reflections, practice projects and the little moments with my cats.</p>
         </div>
-        <div class="hero-art" aria-label="Cat illustration">🐈</div>
+        <div class="photo-collage" aria-label="London photo collage">
+          <figure class="polaroid polaroid-one">
+            <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=85" alt="London at sunset">
+            <figcaption>London, little by little</figcaption>
+          </figure>
+          <figure class="polaroid polaroid-two">
+            <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=700&q=85" alt="A city street">
+            <figcaption>Places & stories</figcaption>
+          </figure>
+          <div class="hand-note note-films">Good Films<br>Good Life ♡</div>
+          <div class="hand-note note-better">Better<br>Me ↗</div>
+        </div>
       </div>
 
-      <section class="film-wall" aria-label="My changing film and TV inspiration photos">
-        <div class="film-wall-heading">
-          <div>
-            <div class="eyebrow">This week's inspiration</div>
-            <h2>Stories I keep close ♡</h2>
-            <p>Little frames from films and series I love.</p>
-          </div>
-          <div class="photo-tools">
-            <label for="photo-upload-1">＋ Change photo 1<input id="photo-upload-1" type="file" accept="image/*"></label>
-            <label for="photo-upload-2">＋ Change photo 2<input id="photo-upload-2" type="file" accept="image/*"></label>
-            <button id="reset-photos" type="button">Reset preview</button>
-          </div>
-        </div>
-        <div class="polaroid-row">
-          <figure class="polaroid">
-            <span class="tape"></span>
-            <img id="inspiration-photo-1" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=80" alt="Film-inspired cinema scene">
-            <figcaption contenteditable="true" aria-label="Editable caption for photo one">A story that stays with me.</figcaption>
-          </figure>
-          <figure class="polaroid">
-            <span class="tape"></span>
-            <img id="inspiration-photo-2" src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=80" alt="Evening city scene">
-            <figcaption contenteditable="true" aria-label="Editable caption for photo two">London, in my imagination.</figcaption>
-          </figure>
-        </div>
-        <div class="film-note">film diary ✎</div>
-      </section>
-      <p class="photo-hint">Tip: Choose a photo to preview it here, and click the handwritten caption to edit it. Browser previews are temporary; to publish a permanent change, replace the image in your GitHub files.</p>
+      <div class="category-grid">
+        <a class="category-card featured" href="#reflections">
+          <span class="number">01</span><span class="category-symbol">▤</span>
+          <h2>Reflections</h2>
+          <p>Weekly reflections on my learning, thoughts and progress.</p>
+          <span class="stamp">ADMIT<br>ONE</span>
+        </a>
+        <a class="category-card" href="#practice">
+          <span class="number">02</span><span class="category-symbol">▣</span>
+          <h2>My Practice</h2>
+          <p>Projects and creative work from my course.</p>
+          <span class="corner-doodle">✺</span>
+        </a>
+        <a class="category-card" href="#cats">
+          <span class="number">03</span><span class="category-symbol">♧</span>
+          <h2>My Cats</h2>
+          <p>Meet my cats and their daily life in the UK.</p>
+          <span class="paw">✣</span>
+        </a>
+      </div>
+      <footer class="page-footer"><span>“Not all those who wander are lost.” <b>♡</b></span><span class="footer-film">▰ ▰ ▰</span></footer>
+    </section>
 
+    <section class="page" id="reflections" data-page="reflections">
+      <a class="back-link" href="#home">← Home</a>
       <div class="section-heading">
-        <div><h2>Explore my journey</h2><p>Learning, making, and little everyday moments.</p></div>
+        <h1>Reflections</h1><span class="red-scribble"></span>
+        <p>Weekly reflections on my learning journey.</p>
       </div>
-      <div class="cards">
-        <button class="category-card featured" data-page="reflections">
-          <div class="card-icon">📔</div><h2 style="font-size:1.65rem">Reflections</h2>
-          <p>Weekly reflections on what I learned, what challenged me, and what I’ll try next.</p>
-          <span class="pill">View reflections&nbsp; →</span>
-        </button>
-        <button class="category-card" data-page="practice">
-          <div class="card-icon">✏️</div><h2 style="font-size:1.65rem">My Practice</h2>
-          <p>Coursework, experiments, and creative projects from my digital media journey.</p>
-          <span class="pill" style="background:#c6a17e">View my practice&nbsp; →</span>
-        </button>
-        <button class="category-card" data-page="cats">
-          <div class="card-icon">🐱</div><h2 style="font-size:1.65rem">My Cats</h2>
-          <p>A small gallery of my cats and the everyday moments that make me smile.</p>
-          <span class="pill" style="background:#b99b7d">Meet my cats&nbsp; →</span>
-        </button>
+      <div class="week-list">
+        <a class="week-row" href="#week1"><span class="week-number">01</span><span class="week-text"><strong>Week 1</strong><small>Getting started — my goals and expectations</small><time>2025.09.15</time></span><span class="arrow">→</span></a>
+        <a class="week-row" href="#week2"><span class="week-number">02</span><span class="week-text"><strong>Week 2</strong><small>Learning process and challenges</small><time>2025.09.22</time></span><span class="arrow">→</span></a>
+        <a class="week-row" href="#week3"><span class="week-number">03</span><span class="week-text"><strong>Week 3</strong><small>New skills and key takeaways</small><time>2025.09.29</time></span><span class="arrow">→</span></a>
+        <a class="week-row" href="#week4"><span class="week-number">04</span><span class="week-text"><strong>Week 4</strong><small>Progress and next steps</small><time>2025.10.06</time></span><span class="arrow">→</span></a>
+        <a class="week-row" href="#week5"><span class="week-number">05</span><span class="week-text"><strong>Week 5</strong><small>Ideas, questions and discoveries</small><time>Add your date</time></span><span class="arrow">→</span></a>
+        <a class="week-row" href="#week6"><span class="week-number">06</span><span class="week-text"><strong>Week 6</strong><small>What I want to explore next</small><time>Add your date</time></span><span class="arrow">→</span></a>
       </div>
+      <div class="hand-note reflection-note">The more<br>I learn, the more<br>I see how much<br>there is to learn. ♡</div>
+      <footer class="page-footer"><span>Good Things Take Time.</span><span class="red-doodle">♧ ✦</span></footer>
     </section>
 
-    <section id="reflections" class="page hidden">
-      <div class="page-banner"><div class="eyebrow">Look back, learn, move forward</div><h2>Weekly Reflections</h2><p>Short notes on my learning journey, one week at a time.</p></div>
-      <div class="week-list" id="week-list"></div>
-    </section>
-
-    <section id="week-detail" class="page hidden">
-      <article class="detail">
-        <button class="back" data-page="reflections">← Back to Reflections</button>
-        <div class="eyebrow" id="detail-eyebrow">Weekly reflection</div>
-        <h2 id="detail-title">Week 1</h2>
-        <div class="detail-meta" id="detail-meta">Getting started — my goals and expectations</div>
-        <div class="reflection-block"><h3>✿ What happened this week?</h3><p id="detail-happened"></p></div>
-        <div class="reflection-block"><h3>☼ What did I learn?</h3><p id="detail-learned"></p></div>
-        <div class="reflection-block"><h3>♡ Challenges and questions</h3><p id="detail-challenges"></p></div>
-        <div class="reflection-block"><h3>→ Next steps</h3><p id="detail-next"></p></div>
-        <p style="color:var(--muted);font-size:.88rem;margin-top:24px">Tip: Replace this sample text with your own weekly reflection before publishing.</p>
-      </article>
-    </section>
-
-    <section id="practice" class="page hidden">
-      <div class="page-banner"><div class="eyebrow">Ideas into practice</div><h2>My Practice</h2><p>A simple collection of course projects and creative experiments.</p></div>
-      <article class="project-card"><div class="project-icon">💻</div><div><h3>Project 1: Digital Media Analysis</h3><p>A short analysis of a digital media example, including research, observations, and reflection.</p></div></article>
-      <article class="project-card"><div class="project-icon">🎨</div><div><h3>Project 2: Visual Design</h3><p>A visual experiment exploring layout, colour, typography, and communication.</p></div></article>
-      <article class="project-card"><div class="project-icon">📱</div><div><h3>Project 3: Social Media Content</h3><p>A small content concept with a clear audience, message, and creative direction.</p></div></article>
-      <p style="color:var(--muted);font-size:.9rem">These are example cards. Add your own project descriptions and links when ready.</p>
-    </section>
-
-    <section id="cats" class="page hidden">
-      <div class="page-banner"><div class="eyebrow">The little things</div><h2>My Cats</h2><p>A cosy corner for my favourite furry companions.</p></div>
-      <div class="cats-grid">
-        <article class="cat-card"><div class="cat-art">🐈</div><h3>Mochi</h3><p>The curious one — always exploring and watching the world go by.</p></article>
-        <article class="cat-card"><div class="cat-art">🐈‍⬛</div><h3>Luna</h3><p>The gentle one — happiest in a warm spot and a soft blanket.</p></article>
+    <section class="page" id="practice" data-page="practice">
+      <a class="back-link" href="#home">← Home</a>
+      <div class="section-heading">
+        <h1>My Practice</h1><span class="red-scribble"></span>
+        <p>Projects and creative work from my course.</p>
       </div>
-      <p style="color:var(--muted);font-size:.9rem;margin-top:16px">Swap the cat illustrations for your own photos whenever you like.</p>
+      <div class="project-list">
+        <article class="project-row"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=85" alt="Laptop on a desk"><div><h3>Project 1: Digital Media Analysis</h3><p>A short analysis of a digital media case study, including research, findings and reflection.</p><a href="#week1">View Project →</a></div></article>
+        <article class="project-row"><img src="https://images.unsplash.com/photo-1455390582262-044cdeel?auto=format&fit=crop&w=600&q=85" alt="Notebook and creative materials" onerror="this.src='https://images.unsplash.com/photo-1455390582262-044cdeeffe93?auto=format&fit=crop&w=600&q=85'"><div><h3>Project 2: Visual Design</h3><p>A visual design project exploring the theme of “Connection”.</p><a href="#week2">View Project →</a></div></article>
+        <article class="project-row"><img src="https://images.unsplash.com/photo-1455390582262-044cdeeffe93?auto=format&fit=crop&w=600&q=85" alt="Notebook, coffee and notes"><div><h3>Project 3: Social Media Content</h3><p>A set of social media posts for a fictional brand, including content strategy and design.</p><a href="#week3">View Project →</a></div></article>
+      </div>
+      <div class="hand-note practice-note">Ideas →<br>Projects<br>Growth ✦</div>
+      <footer class="page-footer"><span>Small projects make a big difference.</span><span class="footer-film">▰ ▰ ▰</span></footer>
     </section>
+
+    <section class="page" id="cats" data-page="cats">
+      <a class="back-link" href="#home">← Home</a>
+      <div class="section-heading cat-heading">
+        <span class="cat-doodle">♧</span><div><h1>My Cats</h1><span class="red-scribble"></span><p>Meet my cats and their daily life in the UK.</p></div>
+      </div>
+      <div class="cat-grid">
+        <article class="cat-card"><img src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=900&q=85" alt="A grey and white cat"><h3>Mochi</h3><p>The curious one. Loves exploring and watching the windows.</p></article>
+        <article class="cat-card"><img src="https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?auto=format&fit=crop&w=900&q=85" alt="An orange cat"><h3>Luna</h3><p>The gentle one. Loves sleeping and soft blankets. <b>♡</b></p></article>
+        <article class="cat-card wide-cat"><img src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=1200&q=85" alt="Two cats together"><div class="hand-note">Best friends<br>forever ♡</div></article>
+      </div>
+      <footer class="page-footer"><span>Good cats, good mood.</span><span class="paw">✣ ♡</span></footer>
+    </section>
+
+    <section class="page" id="week1" data-page="week1">
+      <a class="back-link" href="#reflections">← Reflections</a>
+      <div class="week-detail-top"><div class="week-badge"><span>▤</span><div><strong>Week 1</strong><small>2025.09.15</small></div></div><div class="mini-polaroid"><img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=400&q=80" alt="London skyline"><span>A new chapter ♡</span></div></div>
+      <p class="week-subtitle">Getting started — my goals and expectations</p>
+      <div class="reflection-steps">
+        <article><span>1</span><div><h3>What happened this week?</h3><p>This week, I started my learning journey at the University of Leeds. I got familiar with the course structure, met my classmates and explored the learning platform. Although there is still a lot to adapt to, I feel excited about what’s ahead.</p></div></article>
+        <article><span>2</span><div><h3>What I learned</h3><ul><li>The main modules and assessment methods of the course</li><li>How to use online platforms</li><li>The importance of time management</li></ul></div></article>
+        <article><span>3</span><div><h3>Challenges and questions</h3><ul><li>It’s a bit overwhelming at the beginning</li><li>I’m not very confident with coding yet</li><li>How to balance study, work and personal life?</li></ul></div></article>
+        <article><span>4</span><div><h3>Next steps</h3><ul><li>Review the course materials in detail</li><li>Start working on my first project</li><li>Improve my English listening and academic writing</li></ul></div></article>
+      </div>
+      <blockquote>“A new environment, new challenges,<br>and a better version of myself.”</blockquote>
+    </section>
+
+    <section class="page" id="week2" data-page="week2"><a class="back-link" href="#reflections">← Reflections</a><div class="section-heading"><h1>Week 2</h1><span class="red-scribble"></span><p>Learning process and challenges.</p></div><div class="empty-note">Add your weekly reflection here ✎</div></section>
+    <section class="page" id="week3" data-page="week3"><a class="back-link" href="#reflections">← Reflections</a><div class="section-heading"><h1>Week 3</h1><span class="red-scribble"></span><p>New skills and key takeaways.</p></div><div class="empty-note">Add your weekly reflection here ✎</div></section>
+    <section class="page" id="week4" data-page="week4"><a class="back-link" href="#reflections">← Reflections</a><div class="section-heading"><h1>Week 4</h1><span class="red-scribble"></span><p>Progress and next steps.</p></div><div class="empty-note">Add your weekly reflection here ✎</div></section>
+    <section class="page" id="week5" data-page="week5"><a class="back-link" href="#reflections">← Reflections</a><div class="section-heading"><h1>Week 5</h1><span class="red-scribble"></span><p>Ideas, questions and discoveries.</p></div><div class="empty-note">Add your weekly reflection here ✎</div></section>
+    <section class="page" id="week6" data-page="week6"><a class="back-link" href="#reflections">← Reflections</a><div class="section-heading"><h1>Week 6</h1><span class="red-scribble"></span><p>What I want to explore next.</p></div><div class="empty-note">Add your weekly reflection here ✎</div></section>
   </main>
-
-  <footer><div class="shell footer-inner"><span>🐾 My Little Journey</span><span>Small steps, big changes. ♡</span></div></footer>
-
-  <script>
-    const reflections = [
-      { week: 1, subtitle: "Getting started — my goals and expectations", date: "Week 1", happened: "This week I began my learning journey, explored the course structure, and started thinking about what I want to achieve.", learned: "I learned how the course is organised and why it is useful to reflect regularly on my progress.", challenges: "There is a lot of new information to take in, and I am still getting used to the tools and expectations.", next: "Review my notes, organise my weekly tasks, and choose one small goal to focus on." },
-      { week: 2, subtitle: "Learning process and challenges", date: "Week 2", happened: "This week I worked through the next set of course materials and tried applying one idea to a practical task.", learned: "I learned that breaking a large task into smaller steps makes it easier to start and evaluate my progress.", challenges: "I need to manage my time carefully and ask questions when something is unclear.", next: "Set aside focused study time and write down questions to bring to the next class." },
-      { week: 3, subtitle: "New skills and key takeaways", date: "Week 3", happened: "This week I practised a new skill and connected it to examples from digital media.", learned: "I learned to look more carefully at how design choices shape the way an audience understands a message.", challenges: "I would like to become more confident explaining my ideas in English.", next: "Collect useful vocabulary and practise explaining one course concept in my own words." },
-      { week: 4, subtitle: "Progress and next steps", date: "Week 4", happened: "This week I reviewed my progress and identified which study habits are helping me most.", learned: "Regular review helps me notice progress that I might otherwise overlook.", challenges: "I sometimes spend too long polishing details before the main idea is clear.", next: "Start assignments with a simple outline and improve it step by step." },
-      { week: 5, subtitle: "Putting ideas into practice", date: "Week 5", happened: "This week I began turning course ideas into a small practical outcome.", learned: "Planning for the audience and purpose makes creative decisions more focused.", challenges: "I need to balance experimentation with the requirements of the assignment.", next: "Ask for feedback and record how I use it to improve the work." },
-      { week: 6, subtitle: "Feedback and improvement", date: "Week 6", happened: "This week I reviewed feedback and considered how it could strengthen my work.", learned: "Feedback is most useful when I turn it into specific actions rather than treating it as a final judgement.", challenges: "It can be difficult to decide which suggestions to prioritise.", next: "Choose two changes that will make the biggest difference and document the results." },
-      { week: 7, subtitle: "Connecting theory and practice", date: "Week 7", happened: "This week I looked for links between academic ideas and examples in everyday digital media.", learned: "Theory gives me a clearer language for explaining why a media example works in a particular way.", challenges: "I need more practice supporting observations with evidence.", next: "Keep a short list of useful readings and examples for future assignments." },
-      { week: 8, subtitle: "Looking back and moving forward", date: "Week 8", happened: "This week I reviewed earlier reflections and compared them with my current understanding.", learned: "Small, consistent actions have helped me build confidence and a clearer learning routine.", challenges: "I still have areas to improve, especially planning ahead and expressing complex ideas clearly.", next: "Set new goals for the next stage and continue writing a short reflection every week." }
-    ];
-
-    function showPage(pageId) {
-      document.querySelectorAll(".page").forEach(page => page.classList.add("hidden"));
-      document.getElementById(pageId).classList.remove("hidden");
-      document.querySelectorAll("[data-page]").forEach(button => {
-        button.classList.toggle("active", button.dataset.page === pageId || (pageId === "week-detail" && button.dataset.page === "reflections"));
-      });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    function openWeek(weekNumber) {
-      const item = reflections.find(reflection => reflection.week === weekNumber);
-      if (!item) return;
-      document.getElementById("detail-title").textContent = `Week ${item.week}`;
-      document.getElementById("detail-meta").textContent = item.subtitle;
-      document.getElementById("detail-happened").textContent = item.happened;
-      document.getElementById("detail-learned").textContent = item.learned;
-      document.getElementById("detail-challenges").textContent = item.challenges;
-      document.getElementById("detail-next").textContent = item.next;
-      showPage("week-detail");
-    }
-    const weekList = document.getElementById("week-list");
-    reflections.forEach(item => {
-      const button = document.createElement("button");
-      button.className = "week-item";
-      button.innerHTML = `<span class="week-number">${item.week}</span><span><strong>Week ${item.week}</strong><p>${item.subtitle}</p></span><span class="arrow">›</span>`;
-      button.addEventListener("click", () => openWeek(item.week));
-      weekList.appendChild(button);
-    });
-    document.querySelectorAll("[data-page]").forEach(button => {
-      button.addEventListener("click", () => showPage(button.dataset.page));
-    });
-    document.querySelectorAll('a[href="#home"]').forEach(link => link.addEventListener("click", () => showPage("home")));
-
-    const originalPhotoSources = {
-      one: document.getElementById("inspiration-photo-1").src,
-      two: document.getElementById("inspiration-photo-2").src
-    };
-    function setupPhotoPicker(inputId, imageId) {
-      const input = document.getElementById(inputId);
-      const image = document.getElementById(imageId);
-      input.addEventListener("change", event => {
-        const file = event.target.files && event.target.files[0];
-        if (!file) return;
-        if (!file.type.startsWith("image/")) {
-          alert("Please choose an image file.");
-          input.value = "";
-          return;
-        }
-        image.src = URL.createObjectURL(file);
-      });
-    }
-    setupPhotoPicker("photo-upload-1", "inspiration-photo-1");
-    setupPhotoPicker("photo-upload-2", "inspiration-photo-2");
-    document.getElementById("reset-photos").addEventListener("click", () => {
-      document.getElementById("inspiration-photo-1").src = originalPhotoSources.one;
-      document.getElementById("inspiration-photo-2").src = originalPhotoSources.two;
-      document.getElementById("photo-upload-1").value = "";
-      document.getElementById("photo-upload-2").value = "";
-    });
-
-  </script>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
