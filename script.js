@@ -155,6 +155,151 @@
     editors.set(week, { host, inputs, save, status });
   }
 
+  
+  async function loadReflectionImages(week) {
+    const editor = editors.get(week);
+    if (!editor || !client) return;
+
+    editor.imageStatus.textContent = "Loading images…";
+    editor.imageGrid.replaceChildren();
+
+    const { data, error } = await client
+      .from("reflection_images")
+      .select("id, user_id, week_number, storage_path, caption, created_at")
+      .eq("week_number", week)
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      editor.imageStatus.textContent = "Could not load images: " + error.message;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      editor.imageStatus.textContent = "No images added yet.";
+      return;
+    }
+
+    editor.imageStatus.textContent = "";
+
+    data.forEach(item => {
+      const card = make("figure", "reflection-image-card");
+      const image = make("img");
+      const { data: urlData } = client.storage
+        .from("reflection-images")
+        .getPublicUrl(item.storage_path);
+
+      image.src = urlData.publicUrl;
+      image.alt = item.caption || "Weekly reflection image";
+      image.loading = "lazy";
+      card.append(image);
+
+      if (item.caption) {
+        card.append(make("figcaption", "", item.caption));
+      }
+
+      if (currentUser && currentUser.id === OWNER_UID) {
+        const remove = make("button", "image-delete-button", "Delete image");
+        remove.type = "button";
+        remove.addEventListener("click", async () => {
+          if (!window.confirm("Delete this image?")) return;
+
+          remove.disabled = true;
+          editor.imageStatus.textContent = "Deleting image…";
+
+          const { error: storageError } = await client.storage
+            .from("reflection-images")
+            .remove([item.storage_path]);
+
+          if (storageError) {
+            editor.imageStatus.textContent = "Delete failed: " + storageError.message;
+            remove.disabled = false;
+            return;
+          }
+
+          const { error: recordError } = await client
+            .from("reflection_images")
+            .delete()
+            .eq("id", item.id);
+
+          if (recordError) {
+            editor.imageStatus.textContent =
+              "The image file was removed, but its database record could not be deleted: " +
+              recordError.message;
+            return;
+          }
+
+          await loadReflectionImages(week);
+        });
+
+        card.append(remove);
+      }
+
+      editor.imageGrid.append(card);
+    });
+  }
+
+  async function uploadReflectionImage(week) {
+    const editor = editors.get(week);
+    if (!editor || !client || !currentUser || currentUser.id !== OWNER_UID) {
+      return;
+    }
+
+    const file = editor.imageFile.files[0];
+    if (!file) {
+      editor.imageStatus.textContent = "Please choose an image first.";
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      editor.imageStatus.textContent = "Please choose an image file.";
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      editor.imageStatus.textContent = "Image is too large. Maximum size is 10 MB.";
+      return;
+    }
+
+    editor.uploadButton.disabled = true;
+    editor.imageStatus.textContent = "Uploading image…";
+
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const path = OWNER_UID + "/week-" + week + "/" +
+      Date.now() + "-" + safeName;
+
+    const { error: uploadError } = await client.storage
+      .from("reflection-images")
+      .upload(path, file, { upsert: false, contentType: file.type });
+
+    if (uploadError) {
+      editor.imageStatus.textContent = "Upload failed: " + uploadError.message;
+      editor.uploadButton.disabled = false;
+      return;
+    }
+
+    const { error: recordError } = await client
+      .from("reflection_images")
+      .insert({
+        user_id: currentUser.id,
+        week_number: week,
+        storage_path: path,
+        caption: editor.imageCaption.value.trim()
+      });
+
+    if (recordError) {
+      await client.storage.from("reflection-images").remove([path]);
+      editor.imageStatus.textContent = "Could not save image details: " + recordError.message;
+      editor.uploadButton.disabled = false;
+      return;
+    }
+
+    editor.imageFile.value = "";
+    editor.imageCaption.value = "";
+    editor.uploadButton.disabled = false;
+    editor.imageStatus.textContent = "Image uploaded successfully.";
+    await loadReflectionImages(week);
+  }
+
   function prepareEditors() {
     makeAccountPanel();
     for (let week = 1; week <= 6; week++) {
