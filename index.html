@@ -1,459 +1,344 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A personal portfolio exploring digital media, data, brand communication, and storytelling.">
-  <title>My Space | Personal Portfolio</title>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A small personal learning journal with weekly reflections, practice projects, and cats.">
+  <title>My Little Journey</title>
   <style>
     :root {
-      --background: #f8f7f4;
-      --text: #252525;
-      --muted: #777772;
-      --line: #e5e2dc;
-      --accent: #252525;
-      --card: #ffffff;
+      --cream: #fbf7f0;
+      --paper: #fffdf9;
+      --sand: #f2e6d7;
+      --peach: #f6dfcc;
+      --brown: #5d4635;
+      --muted: #867565;
+      --rust: #a66c45;
+      --line: #eadfd2;
+      --shadow: 0 8px 24px rgba(85, 61, 41, .07);
+      --radius: 20px;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 90px;
-    }
-
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      background: var(--background);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Helvetica, Arial, sans-serif;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
+      margin: 0; background: var(--cream); color: var(--brown);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif; line-height: 1.6;
     }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .container {
-      width: min(1120px, 88%);
-      margin: 0 auto;
-    }
-
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .shell { width: min(1100px, calc(100% - 32px)); margin: 0 auto; }
     header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(248, 247, 244, 0.96);
-      border-bottom: 1px solid var(--line);
-      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 10; background: rgba(255,253,249,.94);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--line);
     }
-
-    nav {
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
+    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .02em; white-space: nowrap; }
+    .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 14px; background: var(--sand); font-size: 21px; }
+    .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .nav-links button {
+      border: 0; background: transparent; color: var(--muted); cursor: pointer;
+      padding: 10px 13px; border-radius: 999px; font-size: .94rem;
     }
-
-    .logo {
-      font-size: 17px;
-      font-weight: 800;
-      letter-spacing: 3px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .nav-links a:hover,
-    .text-link:hover {
-      color: var(--text);
-    }
-
+    .nav-links button:hover, .nav-links button.active { color: var(--brown); background: var(--sand); }
+    main { padding: 28px 0 42px; min-height: calc(100vh - 145px); }
     .hero {
-      min-height: 600px;
-      display: flex;
-      align-items: center;
-      padding: 100px 0;
-      border-bottom: 1px solid var(--line);
+      display: grid; grid-template-columns: 1.1fr .9fr; overflow: hidden;
+      background: linear-gradient(115deg, #fffdf9 0%, #f5e9db 100%);
+      border: 1px solid var(--line); border-radius: 26px; box-shadow: var(--shadow);
+      min-height: 290px; margin-bottom: 24px;
+    }
+    .hero-copy { padding: clamp(28px, 5vw, 58px); align-self: center; }
+    .eyebrow { color: var(--rust); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 800; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-family: Georgia, serif; font-weight: 500; font-size: clamp(2.3rem, 5vw, 4rem); line-height: 1.08; margin: 12px 0 18px; }
+    h2 { font-family: Georgia, serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 500; margin-bottom: 8px; }
+    h3 { font-size: 1.08rem; margin-bottom: 5px; }
+    .intro { color: var(--muted); max-width: 500px; margin-bottom: 20px; }
+    .hero-art { display: grid; place-items: center; min-height: 240px; background: radial-gradient(circle at 55% 45%, #fff9f0 0 15%, transparent 16%), linear-gradient(140deg, #f2dfcc, #e9d4bd); font-size: clamp(6rem, 14vw, 10rem); position: relative; }
+    .hero-art:after { content: "little moments, big growth ♡"; position: absolute; bottom: 22px; right: 24px; font-family: Georgia, serif; font-style: italic; font-size: .9rem; color: var(--rust); }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 28px 2px 16px; }
+    .section-heading p { color: var(--muted); margin: 0; }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .category-card {
+      text-align: left; padding: 25px; border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--paper); box-shadow: var(--shadow); cursor: pointer; min-height: 218px;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .category-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(85,61,41,.11); }
+    .category-card.featured { background: linear-gradient(145deg, #f8e7d6, #fffaf3); border: 2px solid #d9ad87; }
+    .card-icon { font-size: 2rem; margin-bottom: 12px; }
+    .category-card p { color: var(--muted); font-size: .94rem; margin: 8px 0 18px; }
+    .pill { display: inline-block; background: var(--rust); color: white; border-radius: 999px; padding: 9px 16px; font-size: .84rem; }
+    .page-banner { padding: 28px clamp(22px, 4vw, 40px); border-radius: 22px; background: #f3e6d8; border: 1px solid var(--line); margin-bottom: 22px; }
+    .page-banner p { color: var(--muted); margin-bottom: 0; }
+    .week-list { display: grid; gap: 12px; }
+    .week-item {
+      display: grid; grid-template-columns: 54px 1fr auto; gap: 16px; align-items: center;
+      width: 100%; text-align: left; border: 1px solid var(--line); background: var(--paper);
+      border-radius: 16px; padding: 17px 20px; cursor: pointer; box-shadow: 0 3px 12px rgba(85,61,41,.035);
+    }
+    .week-item:hover { border-color: #d5ac89; background: #fffaf4; }
+    .week-number { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--sand); font-family: Georgia, serif; font-size: 1.35rem; }
+    .week-item p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .arrow { color: var(--rust); font-size: 1.35rem; }
+    .detail { max-width: 800px; margin: 0 auto; background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: clamp(22px, 5vw, 44px); box-shadow: var(--shadow); }
+    .back { border: 0; background: transparent; color: var(--rust); cursor: pointer; padding: 0; margin-bottom: 18px; }
+    .detail-meta { color: var(--muted); font-size: .9rem; margin-bottom: 24px; }
+    .reflection-block { padding: 18px 20px; border-radius: 14px; background: #fbf4eb; margin: 14px 0; }
+    .reflection-block h3 { color: var(--rust); }
+    .reflection-block p, .reflection-block ul { margin-bottom: 0; }
+    .project-card { display: grid; grid-template-columns: 76px 1fr; gap: 18px; align-items: start; padding: 20px; border: 1px solid var(--line); background: var(--paper); border-radius: 17px; margin-bottom: 13px; }
+    .project-icon { display: grid; place-items: center; background: var(--sand); border-radius: 14px; min-height: 70px; font-size: 2rem; }
+    .project-card p { color: var(--muted); margin-bottom: 0; }
+    .cats-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .cat-card { padding: 20px; border: 1px solid var(--line); background: var(--paper); border-radius: 18px; }
+    .cat-art { min-height: 150px; display: grid; place-items: center; background: linear-gradient(135deg, #f4e4d3, #f9eee3); border-radius: 13px; font-size: 5rem; margin-bottom: 15px; }
+    .cat-card p { color: var(--muted); margin-bottom: 0; }
+    footer { border-top: 1px solid var(--line); padding: 20px 0; color: var(--muted); font-size: .85rem; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+    .film-wall {
+      position: relative; min-height: 330px; margin: 24px 0 30px; padding: 32px 24px 42px;
+      border: 1px solid var(--line); border-radius: 20px;
+      background-color: #f7f0e5;
+      background-image: linear-gradient(rgba(110,91,69,.07) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(110,91,69,.07) 1px, transparent 1px);
+      background-size: 16px 16px; overflow: hidden;
+    }
+    .film-wall-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+    .film-wall-heading h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin:0; }
+    .film-wall-heading p { margin:4px 0 0; color:var(--muted); font-size:.9rem; }
+    .photo-tools { display:flex; gap:8px; flex-wrap:wrap; }
+    .photo-tools button, .photo-tools label {
+      display:inline-flex; align-items:center; justify-content:center; border:1px solid #b8a38c;
+      background:#fffaf2; color:var(--brown); padding:8px 12px; border-radius:999px; cursor:pointer; font-size:.84rem;
+    }
+    .photo-tools button:hover, .photo-tools label:hover { background:#f0dfca; }
+    .photo-tools input { display:none; }
+    .polaroid-row { display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:center; max-width:800px; margin:0 auto; }
+    .polaroid {
+      position:relative; padding:10px 10px 42px; background:#fffdf8; border:1px solid #e4d9c8;
+      box-shadow:0 7px 14px rgba(60,44,30,.16); transform:rotate(-3deg);
+    }
+    .polaroid:nth-child(2) { transform:rotate(2.5deg); margin-top:24px; }
+    .polaroid img { display:block; width:100%; height:190px; object-fit:cover; background:#e9dfd1; }
+    .polaroid figcaption { position:absolute; bottom:9px; left:12px; right:12px; font-family:Georgia,serif; font-style:italic; font-weight:700; font-size:.9rem; }
+    .tape { position:absolute; top:-10px; left:32%; width:70px; height:23px; background:rgba(204,178,139,.65); transform:rotate(-5deg); z-index:1; }
+    .polaroid:nth-child(2) .tape { left:60%; transform:rotate(7deg); }
+    .film-note { position:absolute; right:20px; bottom:10px; font-family:Georgia,serif; font-weight:700; font-style:italic; color:#243e5a; transform:rotate(-5deg); }
+    .photo-hint { font-size:.82rem; color:var(--muted); margin:10px 0 0; }
+    @media (max-width:620px) {
+      .film-wall { padding:20px 14px 40px; }
+      .film-wall-heading { align-items:flex-start; flex-direction:column; }
+      .polaroid-row { gap:14px; }
+      .polaroid { padding:7px 7px 36px; }
+      .polaroid img { height:125px; }
+      .polaroid figcaption { font-size:.76rem; }
     }
 
-    .eyebrow {
-      color: #858580;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      max-width: 800px;
-      margin: 28px 0;
-      font-size: clamp(42px, 7vw, 76px);
-      line-height: 1.12;
-      letter-spacing: -2.5px;
-      font-weight: 650;
-    }
-
-    .hero-description {
-      max-width: 680px;
-      color: var(--muted);
-      font-size: 17px;
-      line-height: 1.9;
-    }
-
-    .button {
-      display: inline-block;
-      margin-top: 32px;
-      padding: 14px 23px;
-      background: var(--accent);
-      color: #fff;
-      border: 1px solid var(--accent);
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: 600;
-      transition: opacity 0.2s;
-    }
-
-    .button:hover {
-      opacity: 0.8;
-    }
-
-    section.content-section {
-      padding: 100px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .section-label {
-      margin-bottom: 16px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-    }
-
-    h2 {
-      margin-bottom: 24px;
-      font-size: clamp(30px, 4vw, 44px);
-      line-height: 1.25;
-      letter-spacing: -1px;
-      font-weight: 650;
-    }
-
-    .section-intro {
-      max-width: 700px;
-      color: var(--muted);
-      font-size: 16px;
-    }
-
-    .focus-grid,
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-      margin-top: 40px;
-    }
-
-    .focus-item,
-    .project-card {
-      padding: 28px;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      background: var(--card);
-    }
-
-    .number {
-      margin-bottom: 24px;
-      color: #92928b;
-      font-size: 12px;
-      letter-spacing: 1px;
-    }
-
-    h3 {
-      margin-bottom: 12px;
-      font-size: 19px;
-      line-height: 1.4;
-    }
-
-    .focus-item p,
-    .project-card p {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.8;
-    }
-
-    .project-card {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      min-height: 250px;
-    }
-
-    .project-card .project-type {
-      margin-bottom: 20px;
-      color: #858580;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .project-card p {
-      flex: 1;
-    }
-
-    .text-link {
-      margin-top: 24px;
-      font-size: 13px;
-      font-weight: 650;
-      text-decoration: underline;
-      text-underline-offset: 4px;
-    }
-
-    .contact-panel {
-      max-width: 760px;
-    }
-
-    .contact-panel p {
-      color: var(--muted);
-      font-size: 16px;
-    }
-
-    footer {
-      padding: 28px 0;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    @media (max-width: 700px) {
-      .container {
-        width: 88%;
-      }
-
-      nav {
-        min-height: 68px;
-        align-items: flex-start;
-        flex-direction: column;
-        justify-content: center;
-        padding: 16px 0;
-        gap: 12px;
-      }
-
-      .nav-links {
-        flex-wrap: wrap;
-        gap: 18px;
-        font-size: 13px;
-      }
-
-      .hero {
-        min-height: auto;
-        padding: 90px 0;
-      }
-
-      h1 {
-        letter-spacing: -1.5px;
-      }
-
-      .hero-description {
-        font-size: 15px;
-      }
-
-      section.content-section {
-        padding: 72px 0;
-      }
-
-      .focus-grid,
-      .project-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-      }
-
-      .focus-item,
-      .project-card {
-        padding: 24px;
-      }
+    .hidden { display: none !important; }
+    @media (max-width: 720px) {
+      .nav { align-items: flex-start; flex-direction: column; padding: 14px 0; gap: 8px; }
+      .nav-links { width: 100%; gap: 3px; }
+      .nav-links button { padding: 8px 10px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-art { min-height: 170px; }
+      .cards { grid-template-columns: 1fr; }
+      .category-card { min-height: auto; }
+      .cats-grid { grid-template-columns: 1fr; }
+      .week-item { grid-template-columns: 44px 1fr auto; gap: 11px; padding: 14px; }
+      .week-number { width: 42px; height: 42px; }
     }
   </style>
 </head>
-
 <body>
   <header>
-    <nav class="container" aria-label="Main navigation">
-      <a class="logo" href="#home">MY SPACE.</a>
-
-      <div class="nav-links">
-        <a href="#about">About Me</a>
-        <a href="#work">My Work</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </nav>
+    <div class="shell nav">
+      <a class="brand" href="#home" aria-label="My Little Journey home">
+        <span class="brand-mark">🐾</span><span>My Little Journey</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <button data-page="home" class="active">Home</button>
+        <button data-page="reflections">Reflections</button>
+        <button data-page="practice">My Practice</button>
+        <button data-page="cats">My Cats</button>
+      </nav>
+    </div>
   </header>
 
-  <main>
-    <section class="hero container" id="home">
-      <div>
-        <p class="eyebrow">Welcome to My Personal Website</p>
+  <main class="shell">
+    <section id="home" class="page">
+      <div class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">Welcome to my learning journey</div>
+          <h1>Small Steps,<br>Big Changes.</h1>
+          <p class="intro">A little corner of the internet where I record my weekly reflections, creative practice, and lovely moments with my cats.</p>
+          <span style="color:var(--rust)">— made with curiosity and a cup of tea ☕</span>
+        </div>
+        <div class="hero-art" aria-label="Cat illustration">🐈</div>
+      </div>
 
-        <h1>Hello, welcome to my space.</h1>
+      <section class="film-wall" aria-label="My changing film and TV inspiration photos">
+        <div class="film-wall-heading">
+          <div>
+            <div class="eyebrow">This week's inspiration</div>
+            <h2>Stories I keep close ♡</h2>
+            <p>Little frames from films and series I love.</p>
+          </div>
+          <div class="photo-tools">
+            <label for="photo-upload-1">＋ Change photo 1<input id="photo-upload-1" type="file" accept="image/*"></label>
+            <label for="photo-upload-2">＋ Change photo 2<input id="photo-upload-2" type="file" accept="image/*"></label>
+            <button id="reset-photos" type="button">Reset preview</button>
+          </div>
+        </div>
+        <div class="polaroid-row">
+          <figure class="polaroid">
+            <span class="tape"></span>
+            <img id="inspiration-photo-1" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=80" alt="Film-inspired cinema scene">
+            <figcaption contenteditable="true" aria-label="Editable caption for photo one">A story that stays with me.</figcaption>
+          </figure>
+          <figure class="polaroid">
+            <span class="tape"></span>
+            <img id="inspiration-photo-2" src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=80" alt="Evening city scene">
+            <figcaption contenteditable="true" aria-label="Editable caption for photo two">London, in my imagination.</figcaption>
+          </figure>
+        </div>
+        <div class="film-note">film diary ✎</div>
+      </section>
+      <p class="photo-hint">Tip: Choose a photo to preview it here, and click the handwritten caption to edit it. Browser previews are temporary; to publish a permanent change, replace the image in your GitHub files.</p>
 
-        <p class="hero-description">
-          A space for my learning, ideas, and creative work.
-          I'm exploring digital media, brand communication, and
-          creative design, turning ideas into meaningful projects,
-          one step at a time.
-        </p>
-
-        <a class="button" href="#work">Explore My Work ↗</a>
+      <div class="section-heading">
+        <div><h2>Explore my journey</h2><p>Learning, making, and little everyday moments.</p></div>
+      </div>
+      <div class="cards">
+        <button class="category-card featured" data-page="reflections">
+          <div class="card-icon">📔</div><h2 style="font-size:1.65rem">Reflections</h2>
+          <p>Weekly reflections on what I learned, what challenged me, and what I’ll try next.</p>
+          <span class="pill">View reflections&nbsp; →</span>
+        </button>
+        <button class="category-card" data-page="practice">
+          <div class="card-icon">✏️</div><h2 style="font-size:1.65rem">My Practice</h2>
+          <p>Coursework, experiments, and creative projects from my digital media journey.</p>
+          <span class="pill" style="background:#c6a17e">View my practice&nbsp; →</span>
+        </button>
+        <button class="category-card" data-page="cats">
+          <div class="card-icon">🐱</div><h2 style="font-size:1.65rem">My Cats</h2>
+          <p>A small gallery of my cats and the everyday moments that make me smile.</p>
+          <span class="pill" style="background:#b99b7d">Meet my cats&nbsp; →</span>
+        </button>
       </div>
     </section>
 
-    <section class="content-section" id="about">
-      <div class="container">
-        <p class="section-label">01 / About Me</p>
-
-        <h2>Curious by nature.<br>Creative by practice.</h2>
-
-        <p class="section-intro">
-          I'm a Digital Media student with a professional background
-          in e-commerce marketing and retail planning. I'm interested
-          in how data, storytelling, and digital platforms shape the
-          way brands communicate with people.
-        </p>
-
-        <div class="focus-grid">
-          <article class="focus-item">
-            <p class="number">01 — INSIGHT</p>
-            <h3>Data & Insights</h3>
-            <p>
-              Exploring data to understand audiences, identify
-              patterns, and support better decisions.
-            </p>
-          </article>
-
-          <article class="focus-item">
-            <p class="number">02 — STRATEGY</p>
-            <h3>Brand Communication</h3>
-            <p>
-              Exploring how brands build meaning, connect with
-              consumers, and communicate across digital channels.
-            </p>
-          </article>
-
-          <article class="focus-item">
-            <p class="number">03 — CREATIVITY</p>
-            <h3>Storytelling & Content</h3>
-            <p>
-              Discovering how stories and creative ideas can make
-              content more engaging and meaningful.
-            </p>
-          </article>
-        </div>
-      </div>
+    <section id="reflections" class="page hidden">
+      <div class="page-banner"><div class="eyebrow">Look back, learn, move forward</div><h2>Weekly Reflections</h2><p>Short notes on my learning journey, one week at a time.</p></div>
+      <div class="week-list" id="week-list"></div>
     </section>
 
-    <section class="content-section" id="work">
-      <div class="container">
-        <p class="section-label">02 / Selected Work</p>
-
-        <h2>Ideas in progress.</h2>
-
-        <p class="section-intro">
-          A growing collection of academic projects, research,
-          and creative experiments. More work will be added as
-          I continue learning and exploring.
-        </p>
-
-        <div class="project-grid">
-          <article class="project-card">
-            <p class="project-type">Research / Digital Media</p>
-            <h3>Social Media & Brand Perception</h3>
-            <p>
-              Exploring the relationship between online conversations,
-              controversial advertising, and consumer attitudes.
-            </p>
-            <a class="text-link" href="#contact">
-              Project details coming soon ↗
-            </a>
-          </article>
-
-          <article class="project-card">
-            <p class="project-type">Data / Audience Insights</p>
-            <h3>Understanding the Audience</h3>
-            <p>
-              Exploring how data analysis can reveal audience
-              behaviour and inform marketing decisions.
-            </p>
-            <a class="text-link" href="#contact">
-              Project details coming soon ↗
-            </a>
-          </article>
-
-          <article class="project-card">
-            <p class="project-type">Content / Storytelling</p>
-            <h3>Brand Stories & Creative Content</h3>
-            <p>
-              Exploring the role of storytelling in brand identity,
-              digital content, and audience engagement.
-            </p>
-            <a class="text-link" href="#contact">
-              Project details coming soon ↗
-            </a>
-          </article>
-        </div>
-      </div>
+    <section id="week-detail" class="page hidden">
+      <article class="detail">
+        <button class="back" data-page="reflections">← Back to Reflections</button>
+        <div class="eyebrow" id="detail-eyebrow">Weekly reflection</div>
+        <h2 id="detail-title">Week 1</h2>
+        <div class="detail-meta" id="detail-meta">Getting started — my goals and expectations</div>
+        <div class="reflection-block"><h3>✿ What happened this week?</h3><p id="detail-happened"></p></div>
+        <div class="reflection-block"><h3>☼ What did I learn?</h3><p id="detail-learned"></p></div>
+        <div class="reflection-block"><h3>♡ Challenges and questions</h3><p id="detail-challenges"></p></div>
+        <div class="reflection-block"><h3>→ Next steps</h3><p id="detail-next"></p></div>
+        <p style="color:var(--muted);font-size:.88rem;margin-top:24px">Tip: Replace this sample text with your own weekly reflection before publishing.</p>
+      </article>
     </section>
 
-    <section class="content-section" id="contact">
-      <div class="container">
-        <div class="contact-panel">
-          <p class="section-label">03 / Contact</p>
+    <section id="practice" class="page hidden">
+      <div class="page-banner"><div class="eyebrow">Ideas into practice</div><h2>My Practice</h2><p>A simple collection of course projects and creative experiments.</p></div>
+      <article class="project-card"><div class="project-icon">💻</div><div><h3>Project 1: Digital Media Analysis</h3><p>A short analysis of a digital media example, including research, observations, and reflection.</p></div></article>
+      <article class="project-card"><div class="project-icon">🎨</div><div><h3>Project 2: Visual Design</h3><p>A visual experiment exploring layout, colour, typography, and communication.</p></div></article>
+      <article class="project-card"><div class="project-icon">📱</div><div><h3>Project 3: Social Media Content</h3><p>A small content concept with a clear audience, message, and creative direction.</p></div></article>
+      <p style="color:var(--muted);font-size:.9rem">These are example cards. Add your own project descriptions and links when ready.</p>
+    </section>
 
-          <h2>Let's connect.</h2>
-
-          <p>
-            I'm always interested in exchanging ideas, learning
-            from others, and exploring new opportunities in digital
-            media, data, and brand communication.
-          </p>
-
-          <a
-            class="button"
-            href="https://github.com/data-story-lab"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Find Me on GitHub ↗
-          </a>
-        </div>
+    <section id="cats" class="page hidden">
+      <div class="page-banner"><div class="eyebrow">The little things</div><h2>My Cats</h2><p>A cosy corner for my favourite furry companions.</p></div>
+      <div class="cats-grid">
+        <article class="cat-card"><div class="cat-art">🐈</div><h3>Mochi</h3><p>The curious one — always exploring and watching the world go by.</p></article>
+        <article class="cat-card"><div class="cat-art">🐈‍⬛</div><h3>Luna</h3><p>The gentle one — happiest in a warm spot and a soft blanket.</p></article>
       </div>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:16px">Swap the cat illustrations for your own photos whenever you like.</p>
     </section>
   </main>
 
-  <footer>
-    <div class="container footer-inner">
-      <span>© 2026 My Space.</span>
-      <span>Learning, exploring, and creating.</span>
-    </div>
-  </footer>
+  <footer><div class="shell footer-inner"><span>🐾 My Little Journey</span><span>Small steps, big changes. ♡</span></div></footer>
+
+  <script>
+    const reflections = [
+      { week: 1, subtitle: "Getting started — my goals and expectations", date: "Week 1", happened: "This week I began my learning journey, explored the course structure, and started thinking about what I want to achieve.", learned: "I learned how the course is organised and why it is useful to reflect regularly on my progress.", challenges: "There is a lot of new information to take in, and I am still getting used to the tools and expectations.", next: "Review my notes, organise my weekly tasks, and choose one small goal to focus on." },
+      { week: 2, subtitle: "Learning process and challenges", date: "Week 2", happened: "This week I worked through the next set of course materials and tried applying one idea to a practical task.", learned: "I learned that breaking a large task into smaller steps makes it easier to start and evaluate my progress.", challenges: "I need to manage my time carefully and ask questions when something is unclear.", next: "Set aside focused study time and write down questions to bring to the next class." },
+      { week: 3, subtitle: "New skills and key takeaways", date: "Week 3", happened: "This week I practised a new skill and connected it to examples from digital media.", learned: "I learned to look more carefully at how design choices shape the way an audience understands a message.", challenges: "I would like to become more confident explaining my ideas in English.", next: "Collect useful vocabulary and practise explaining one course concept in my own words." },
+      { week: 4, subtitle: "Progress and next steps", date: "Week 4", happened: "This week I reviewed my progress and identified which study habits are helping me most.", learned: "Regular review helps me notice progress that I might otherwise overlook.", challenges: "I sometimes spend too long polishing details before the main idea is clear.", next: "Start assignments with a simple outline and improve it step by step." },
+      { week: 5, subtitle: "Putting ideas into practice", date: "Week 5", happened: "This week I began turning course ideas into a small practical outcome.", learned: "Planning for the audience and purpose makes creative decisions more focused.", challenges: "I need to balance experimentation with the requirements of the assignment.", next: "Ask for feedback and record how I use it to improve the work." },
+      { week: 6, subtitle: "Feedback and improvement", date: "Week 6", happened: "This week I reviewed feedback and considered how it could strengthen my work.", learned: "Feedback is most useful when I turn it into specific actions rather than treating it as a final judgement.", challenges: "It can be difficult to decide which suggestions to prioritise.", next: "Choose two changes that will make the biggest difference and document the results." },
+      { week: 7, subtitle: "Connecting theory and practice", date: "Week 7", happened: "This week I looked for links between academic ideas and examples in everyday digital media.", learned: "Theory gives me a clearer language for explaining why a media example works in a particular way.", challenges: "I need more practice supporting observations with evidence.", next: "Keep a short list of useful readings and examples for future assignments." },
+      { week: 8, subtitle: "Looking back and moving forward", date: "Week 8", happened: "This week I reviewed earlier reflections and compared them with my current understanding.", learned: "Small, consistent actions have helped me build confidence and a clearer learning routine.", challenges: "I still have areas to improve, especially planning ahead and expressing complex ideas clearly.", next: "Set new goals for the next stage and continue writing a short reflection every week." }
+    ];
+
+    function showPage(pageId) {
+      document.querySelectorAll(".page").forEach(page => page.classList.add("hidden"));
+      document.getElementById(pageId).classList.remove("hidden");
+      document.querySelectorAll("[data-page]").forEach(button => {
+        button.classList.toggle("active", button.dataset.page === pageId || (pageId === "week-detail" && button.dataset.page === "reflections"));
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function openWeek(weekNumber) {
+      const item = reflections.find(reflection => reflection.week === weekNumber);
+      if (!item) return;
+      document.getElementById("detail-title").textContent = `Week ${item.week}`;
+      document.getElementById("detail-meta").textContent = item.subtitle;
+      document.getElementById("detail-happened").textContent = item.happened;
+      document.getElementById("detail-learned").textContent = item.learned;
+      document.getElementById("detail-challenges").textContent = item.challenges;
+      document.getElementById("detail-next").textContent = item.next;
+      showPage("week-detail");
+    }
+    const weekList = document.getElementById("week-list");
+    reflections.forEach(item => {
+      const button = document.createElement("button");
+      button.className = "week-item";
+      button.innerHTML = `<span class="week-number">${item.week}</span><span><strong>Week ${item.week}</strong><p>${item.subtitle}</p></span><span class="arrow">›</span>`;
+      button.addEventListener("click", () => openWeek(item.week));
+      weekList.appendChild(button);
+    });
+    document.querySelectorAll("[data-page]").forEach(button => {
+      button.addEventListener("click", () => showPage(button.dataset.page));
+    });
+    document.querySelectorAll('a[href="#home"]').forEach(link => link.addEventListener("click", () => showPage("home")));
+
+    const originalPhotoSources = {
+      one: document.getElementById("inspiration-photo-1").src,
+      two: document.getElementById("inspiration-photo-2").src
+    };
+    function setupPhotoPicker(inputId, imageId) {
+      const input = document.getElementById(inputId);
+      const image = document.getElementById(imageId);
+      input.addEventListener("change", event => {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+        if (!file.type.startsWith("image/")) {
+          alert("Please choose an image file.");
+          input.value = "";
+          return;
+        }
+        image.src = URL.createObjectURL(file);
+      });
+    }
+    setupPhotoPicker("photo-upload-1", "inspiration-photo-1");
+    setupPhotoPicker("photo-upload-2", "inspiration-photo-2");
+    document.getElementById("reset-photos").addEventListener("click", () => {
+      document.getElementById("inspiration-photo-1").src = originalPhotoSources.one;
+      document.getElementById("inspiration-photo-2").src = originalPhotoSources.two;
+      document.getElementById("photo-upload-1").value = "";
+      document.getElementById("photo-upload-2").value = "";
+    });
+
+  </script>
 </body>
 </html>
