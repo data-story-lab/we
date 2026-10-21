@@ -1,7 +1,7 @@
 (() => {
   // My Little Journey — Supabase reflection editor
   // IMPORTANT: replace the placeholder below with your Supabase Publishable key.
-  const SUPABASE_URL = "https://gmghzvsllkmnjtvwixv.supabase.co";
+  const SUPABASE_URL = "https://gmghzvsllklmnjtvwixv.supabase.co";
   const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_v7XrHNr943DD81ki3rX9KA_4iYuRr6o";
   const OWNER_UID = "b21028dd-b5b9-448c-affa-dd099e46a769";
   const FIELD_INFO = [
