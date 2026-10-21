@@ -79,3 +79,24 @@ blockquote{display:inline-block;margin:18px 0 0 35px;padding:12px 20px;backgroun
 .empty-note{margin:30px;padding:35px;border:1px dashed #bca986;background:#fff7e7;font:18px 'Kalam',cursive;color:var(--ink)}
 @media(max-width:800px){.paper-shell{margin:8px;padding:20px 18px;border-width:4px}.site-header{align-items:flex-start;flex-direction:column;gap:8px}.brand{font-size:24px}.nav{width:100%;gap:0;justify-content:space-between}.nav a{font-size:11px}.hero-grid{grid-template-columns:1fr;gap:0}.hero-copy{padding:10px 12px}.hero-copy h1{font-size:48px}.photo-collage{min-height:260px}.category-grid{grid-template-columns:1fr;gap:12px}.category-card{min-height:155px}.reflection-note,.practice-note{position:relative;right:auto;top:auto;margin:18px 0 0 65%}.week-list{margin-left:0}.section-heading{margin-left:8px}.section-heading h1{font-size:40px}.project-list{margin-left:0}.project-row{grid-template-columns:105px 1fr;gap:12px}.project-row img{width:105px;height:90px}.cat-grid{margin:20px 0}.cat-card img{height:125px}.week-detail-top{margin:5px 5px 0}.reflection-steps{margin:0 5px}.page-footer{font-size:13px}}
 @media(max-width:460px){.nav a{font-size:9px}.polaroid-one{width:62%}.polaroid-two{width:43%}.hand-note{font-size:15px}.intro{font-size:11px}.week-row{gap:10px;padding:10px}.week-number{width:36px;height:36px}.week-text strong{font-size:19px}.week-text small{font-size:9px}.cat-grid{grid-template-columns:1fr}.wide-cat{grid-column:auto}.wide-cat img{width:70%}.project-row{grid-template-columns:1fr}.project-row img{width:100%;height:145px}.mini-polaroid{width:105px}.mini-polaroid img{height:60px}}
+/* Append this file's contents to the END of your existing style.css */
+.account-panel,.reflection-editor{position:relative;z-index:1;margin:22px 8px;padding:20px 22px;background:rgba(255,249,235,.86);border:1px dashed #c7b38d;border-radius:8px;box-shadow:0 2px 5px #44341c12}
+.account-panel h2,.reflection-editor h2{font:700 25px 'Kalam',cursive;color:var(--ink);margin:0 0 5px}
+.account-description,.editor-intro{font-size:11px;margin:0 0 14px}
+.account-form{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.account-form input{flex:1;min-width:180px;padding:11px 12px;border:1px solid #d0bea0;border-radius:5px;background:#fffaf0;font:12px 'Special Elite',monospace;color:var(--text)}
+.reflection-button{border:0;border-radius:5px;padding:10px 16px;background:var(--ink);color:#fff8e9;font:12px 'Special Elite',monospace;cursor:pointer}
+.reflection-button:hover{filter:brightness(1.12)}
+.reflection-button:disabled{opacity:.55;cursor:wait}
+.reflection-button.secondary{margin-top:8px;background:#8e3d30}
+.account-message,.save-status{font-size:10px;color:#686153;margin:10px 0 0;overflow-wrap:anywhere}
+.reflection-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.reflection-field{display:flex;flex-direction:column;gap:6px;color:var(--ink);font:700 15px 'Kalam',cursive}
+.reflection-field textarea{width:100%;min-height:112px;resize:vertical;padding:12px;border:1px solid #d5c5a8;border-radius:5px;background:#fffaf0;color:var(--text);font:12px/1.65 'Special Elite','Courier New',monospace;outline-color:var(--ink)}
+.reflection-field textarea:read-only{background:#f5ead5;color:#4b4a43}
+.editor-controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:14px}
+.save-status{margin:0}
+.save-status[data-state="saved"]{color:#276345}
+.save-status[data-state="error"]{color:#a12e25}
+.save-status[data-state="pending"]{color:#8b5a16}
+@media(max-width:600px){.account-panel,.reflection-editor{margin:18px 0;padding:16px}.reflection-fields{grid-template-columns:1fr}.account-form{align-items:stretch;flex-direction:column}.account-form input,.account-form button{width:100%}}
