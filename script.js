@@ -149,10 +149,55 @@
     const status = make("p", "save-status", "Loading reflection…");
     status.setAttribute("role", "status");
     save.addEventListener("click", () => saveWeek(week));
+    
     controls.append(save, status);
-    host.append(fields, controls);
+
+    const imageSection = make("section", "image-section");
+    imageSection.append(
+      make("h3", "", "A little visual diary"),
+      make("p", "image-intro", "Add a photo that captures this week's journey.")
+    );
+
+    const imageForm = make("div", "image-upload-form");
+
+    const imageFile = make("input", "image-file-input");
+    imageFile.type = "file";
+    imageFile.accept = "image/*";
+    imageFile.setAttribute("aria-label", "Choose an image");
+
+    const imageCaption = make("input", "image-caption-input");
+    imageCaption.type = "text";
+    imageCaption.maxLength = 300;
+    imageCaption.placeholder = "Write a short caption…";
+    imageCaption.setAttribute("aria-label", "Image caption");
+
+    const uploadButton = make("button", "reflection-button", "Upload image");
+    uploadButton.type = "button";
+
+    const imageStatus = make("p", "image-status", "Loading images…");
+    imageStatus.setAttribute("role", "status");
+
+    const imageGrid = make("div", "reflection-image-grid");
+
+    uploadButton.addEventListener("click", () => uploadReflectionImage(week));
+
+    imageForm.append(imageFile, imageCaption, uploadButton);
+    imageSection.append(imageForm, imageStatus, imageGrid);
+
+    host.append(fields, controls, imageSection);
     page.append(host);
-    editors.set(week, { host, inputs, save, status });
+
+    editors.set(week, {
+      host,
+      inputs,
+      save,
+      status,
+      imageFile,
+      imageCaption,
+      uploadButton,
+      imageStatus,
+      imageGrid
+    });
   }
 
   
@@ -328,6 +373,9 @@
       });
       editor.save.hidden = !owner;
       editor.host.classList.toggle("is-readonly", !owner);
+      editor.uploadButton.hidden = !owner;
+      editor.imageFile.disabled = !owner;
+      editor.imageCaption.disabled = !owner;
       if (currentUser && !owner) {
         editor.status.textContent = "Read-only: this account cannot edit reflections.";
       }
@@ -361,7 +409,9 @@
       setStatus(week, "Could not load reflection: " + error.message, "error");
       return;
     }
+    
     applyRow(week, data);
+    await loadReflectionImages(week);
   }
 
   async function saveWeek(week) {
